@@ -10,6 +10,14 @@ module.exports = {
       colors: {
         // Add custom colors if needed
       },
+      transitionProperty: {
+        'width': 'width',
+        'height': 'height',
+        'spacing': 'margin, padding',
+      },
+      zIndex: {
+        '100': '100',
+      },
     },
   },
   plugins: [],

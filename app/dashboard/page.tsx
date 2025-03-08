@@ -6,14 +6,15 @@ export default function Dashboard() {
     <div className="flex min-h-screen bg-gray-100">
       <Sidebar />
       
-      <main className="flex-1 ml-16 p-6">
+      <main className="flex-1 p-6 transition-all duration-300 ml-16">
         <div className="max-w-7xl mx-auto">
           <h1 className="text-3xl font-bold text-gray-900 mb-6">Dashboard</h1>
           
           <div className="bg-white shadow-md rounded-lg p-6">
             <h2 className="text-xl font-semibold mb-4">Welcome to Your Dashboard</h2>
             <p className="text-gray-600">
-              This is your new dashboard page with a fixed sidebar navigation.
+              This is your new dashboard page with an expandable sidebar navigation.
+              Hover over the sidebar to see the navigation labels.
             </p>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">

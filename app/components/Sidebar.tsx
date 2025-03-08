@@ -1,83 +1,119 @@
-import React from 'react';
+"use client"
+
+import React, { useState } from 'react';
 import Link from 'next/link';
 
 export default function Sidebar() {
+  const [isExpanded, setIsExpanded] = useState(false);
+  
   return (
-    <div className="fixed left-0 top-0 h-full w-16 bg-black flex flex-col items-center py-4">
+    <div 
+      className={`fixed left-0 top-0 h-full bg-black flex flex-col items-center py-4 transition-all duration-300 ease-in-out z-10 ${isExpanded ? 'w-48' : 'w-16'}`}
+      onMouseEnter={() => setIsExpanded(true)}
+      onMouseLeave={() => setIsExpanded(false)}
+    >
       {/* Logo or profile avatar at the top */}
       <div className="w-8 h-8 rounded-full bg-blue-500 mb-8 overflow-hidden flex items-center justify-center">
         <div className="text-white text-sm">K</div>
       </div>
       
       {/* Navigation icons */}
-      <nav className="flex flex-col items-center gap-6 flex-1">
-        {/* Home icon */}
-        <Link href="/dashboard" className="w-10 h-10 rounded-md bg-blue-600 flex items-center justify-center text-white">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-          </svg>
+      <nav className="flex flex-col items-center gap-6 flex-1 w-full">
+        {/* Dashboard icon */}
+        <Link href="/dashboard" className={`flex items-center justify-center text-white hover:bg-blue-700 rounded-md transition-all duration-200 ${isExpanded ? 'w-40 justify-start px-3' : 'w-10 h-10'} ${!isExpanded && 'bg-blue-600'}`}>
+          <div className={`flex items-center ${isExpanded ? 'h-10' : 'h-10 w-10'}`}>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+            </svg>
+            {isExpanded && <span className="ml-3 whitespace-nowrap">Dashboard</span>}
+          </div>
         </Link>
         
-        {/* Message icon */}
-        <Link href="#" className="w-10 h-10 flex items-center justify-center text-gray-400 hover:text-white">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-          </svg>
+        {/* Create icon */}
+        <Link href="#" className={`flex items-center justify-center text-gray-400 hover:text-white hover:bg-blue-700 rounded-md transition-all duration-200 ${isExpanded ? 'w-40 justify-start px-3' : 'w-10 h-10'}`}>
+          <div className={`flex items-center ${isExpanded ? 'h-10' : 'h-10 w-10'}`}>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            {isExpanded && <span className="ml-3 whitespace-nowrap">Create</span>}
+          </div>
         </Link>
         
-        {/* Grid/calculator icon */}
-        <Link href="#" className="w-10 h-10 flex items-center justify-center text-gray-400 hover:text-white">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-            <line x1="3" y1="9" x2="21" y2="9"></line>
-            <line x1="9" y1="21" x2="9" y2="9"></line>
-          </svg>
+        {/* Calendar icon */}
+        <Link href="#" className={`flex items-center justify-center text-gray-400 hover:text-white hover:bg-blue-700 rounded-md transition-all duration-200 ${isExpanded ? 'w-40 justify-start px-3' : 'w-10 h-10'}`}>
+          <div className={`flex items-center ${isExpanded ? 'h-10' : 'h-10 w-10'}`}>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+              <line x1="3" y1="9" x2="21" y2="9"></line>
+              <line x1="9" y1="21" x2="9" y2="9"></line>
+            </svg>
+            {isExpanded && <span className="ml-3 whitespace-nowrap">Calendar</span>}
+          </div>
         </Link>
         
-        {/* User/profile icon */}
-        <Link href="#" className="w-10 h-10 flex items-center justify-center text-gray-400 hover:text-white">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-            <circle cx="12" cy="7" r="4"></circle>
-          </svg>
+        {/* Media icon */}
+        <Link href="#" className={`flex items-center justify-center text-gray-400 hover:text-white hover:bg-blue-700 rounded-md transition-all duration-200 ${isExpanded ? 'w-40 justify-start px-3' : 'w-10 h-10'}`}>
+          <div className={`flex items-center ${isExpanded ? 'h-10' : 'h-10 w-10'}`}>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"></rect>
+              <line x1="7" y1="2" x2="7" y2="22"></line>
+              <line x1="17" y1="2" x2="17" y2="22"></line>
+              <line x1="2" y1="12" x2="22" y2="12"></line>
+            </svg>
+            {isExpanded && <span className="ml-3 whitespace-nowrap">Media</span>}
+          </div>
         </Link>
         
-        {/* Chat/message icon */}
-        <Link href="#" className="w-10 h-10 flex items-center justify-center text-gray-400 hover:text-white">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
-          </svg>
+        {/* Inbox icon */}
+        <Link href="#" className={`flex items-center justify-center text-gray-400 hover:text-white hover:bg-blue-700 rounded-md transition-all duration-200 ${isExpanded ? 'w-40 justify-start px-3' : 'w-10 h-10'}`}>
+          <div className={`flex items-center ${isExpanded ? 'h-10' : 'h-10 w-10'}`}>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M22 12h-6l-2 3h-4l-2-3H2"></path>
+              <path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path>
+            </svg>
+            {isExpanded && <span className="ml-3 whitespace-nowrap">Inbox</span>}
+          </div>
         </Link>
         
-        {/* Audio/waveform icon */}
-        <Link href="#" className="w-10 h-10 flex items-center justify-center text-gray-400 hover:text-white">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M2 12h4l3 8 3-16 3 8h4"></path>
-          </svg>
+        {/* Tasks icon */}
+        <Link href="#" className={`flex items-center justify-center text-gray-400 hover:text-white hover:bg-blue-700 rounded-md transition-all duration-200 ${isExpanded ? 'w-40 justify-start px-3' : 'w-10 h-10'}`}>
+          <div className={`flex items-center ${isExpanded ? 'h-10' : 'h-10 w-10'}`}>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="8" y1="6" x2="21" y2="6"></line>
+              <line x1="8" y1="12" x2="21" y2="12"></line>
+              <line x1="8" y1="18" x2="21" y2="18"></line>
+              <line x1="3" y1="6" x2="3.01" y2="6"></line>
+              <line x1="3" y1="12" x2="3.01" y2="12"></line>
+              <line x1="3" y1="18" x2="3.01" y2="18"></line>
+            </svg>
+            {isExpanded && <span className="ml-3 whitespace-nowrap">Tasks</span>}
+          </div>
         </Link>
         
-        {/* Star icon */}
-        <Link href="#" className="w-10 h-10 flex items-center justify-center text-gray-400 hover:text-white">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-          </svg>
+        {/* Reports icon */}
+        <Link href="#" className={`flex items-center justify-center text-gray-400 hover:text-white hover:bg-blue-700 rounded-md transition-all duration-200 ${isExpanded ? 'w-40 justify-start px-3' : 'w-10 h-10'}`}>
+          <div className={`flex items-center ${isExpanded ? 'h-10' : 'h-10 w-10'}`}>
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="16" y1="13" x2="8" y2="13"></line>
+              <line x1="16" y1="17" x2="8" y2="17"></line>
+              <polyline points="10 9 9 9 8 9"></polyline>
+            </svg>
+            {isExpanded && <span className="ml-3 whitespace-nowrap">Reports</span>}
+          </div>
         </Link>
       </nav>
       
       {/* Bottom section */}
-      <div className="mt-auto flex flex-col items-center gap-6 mb-4">
-        {/* Help icon */}
-        <Link href="#" className="w-10 h-10 flex items-center justify-center text-gray-400 hover:text-white">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <circle cx="12" cy="12" r="10"></circle>
-            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
-            <line x1="12" y1="17" x2="12.01" y2="17"></line>
-          </svg>
-        </Link>
-        
+      <div className="mt-auto flex flex-col items-center gap-6 mb-4 w-full">
         {/* Avatar/profile section at bottom */}
-        <div className="w-8 h-8 rounded-full bg-green-600 overflow-hidden flex items-center justify-center">
-          <div className="text-white text-sm">U</div>
+        <div className={`flex items-center ${isExpanded ? 'w-40 justify-start px-3 mx-auto' : 'justify-center'}`}>
+          <div className="w-8 h-8 rounded-full bg-green-600 overflow-hidden flex items-center justify-center">
+            <div className="text-white text-sm">U</div>
+          </div>
+          {isExpanded && <span className="ml-3 text-white text-sm whitespace-nowrap">User Name</span>}
         </div>
       </div>
     </div>
