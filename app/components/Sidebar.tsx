@@ -1,10 +1,13 @@
 "use client"
 
 import React, { useState, useEffect, useRef } from 'react';
-import Link from 'next/link';
 import CreateMenu from './CreateMenu';
 
-export default function Sidebar() {
+export default function Sidebar({ onCalendarClick, activeItem, setActiveItem }: { 
+  onCalendarClick: () => void; 
+  activeItem: string;
+  setActiveItem: (item: string) => void;
+}) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [showCreateMenu, setShowCreateMenu] = useState(false);
   const createButtonRef = useRef<HTMLButtonElement>(null);
@@ -37,36 +40,52 @@ export default function Sidebar() {
         
         {/* Navigation items */}
         <nav className="flex flex-col gap-0.5 flex-1 w-full">
-          {/* Dashboard - active */}
-          <Link href="/dashboard" className="flex items-center h-9 w-full bg-blue-600 hover:bg-blue-700 text-white px-0">
+          {/* Dashboard */}
+          <button 
+            onClick={() => setActiveItem('dashboard')}
+            className={`flex items-center h-9 w-full hover:bg-blue-700 px-0 focus:outline-none ${
+              activeItem === 'dashboard' ? 'bg-blue-600 text-white' : 'text-gray-400 hover:text-white hover:bg-gray-800'
+            }`}
+          >
             <div className={`flex items-center h-full ${isExpanded ? 'pl-4' : 'justify-center w-full'}`}>
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
               </svg>
               {isExpanded && <span className="ml-3 whitespace-nowrap">Dashboard</span>}
             </div>
-          </Link>
+          </button>
           
           {/* Create */}
-          <div className="relative">
-            <button 
-              ref={createButtonRef}
-              onClick={() => setShowCreateMenu(!showCreateMenu)}
-              className="flex items-center h-9 w-full hover:bg-gray-800 text-gray-400 hover:text-white px-0 focus:outline-none"
-            >
-              <div className={`flex items-center h-full ${isExpanded ? 'pl-4' : 'justify-center w-full'}`}>
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <line x1="12" y1="5" x2="12" y2="19"></line>
-                  <line x1="5" y1="12" x2="19" y2="12"></line>
-                </svg>
-                {isExpanded && <span className="ml-3 whitespace-nowrap">Create</span>}
-              </div>
-            </button>
-            <CreateMenu isVisible={showCreateMenu} />
-          </div>
+          <button 
+            ref={createButtonRef}
+            onClick={() => {
+              setShowCreateMenu(!showCreateMenu);
+              setActiveItem('create');
+            }}
+            className={`flex items-center h-9 w-full hover:bg-blue-700 px-0 focus:outline-none ${
+              activeItem === 'create' ? 'bg-blue-600 text-white' : 'text-gray-400 hover:text-white hover:bg-gray-800'
+            }`}
+          >
+            <div className={`flex items-center h-full ${isExpanded ? 'pl-4' : 'justify-center w-full'}`}>
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="12" y1="5" x2="12" y2="19"></line>
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+              </svg>
+              {isExpanded && <span className="ml-3 whitespace-nowrap">Create</span>}
+            </div>
+          </button>
+          <CreateMenu isVisible={showCreateMenu} />
           
           {/* Calendar */}
-          <Link href="#" className="flex items-center h-9 w-full hover:bg-gray-800 text-gray-400 hover:text-white px-0">
+          <button 
+            onClick={() => {
+              onCalendarClick();
+              setActiveItem('calendar');
+            }} 
+            className={`flex items-center h-9 w-full hover:bg-blue-700 px-0 focus:outline-none ${
+              activeItem === 'calendar' ? 'bg-blue-600 text-white' : 'text-gray-400 hover:text-white hover:bg-gray-800'
+            }`}
+          >
             <div className={`flex items-center h-full ${isExpanded ? 'pl-4' : 'justify-center w-full'}`}>
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
@@ -75,10 +94,15 @@ export default function Sidebar() {
               </svg>
               {isExpanded && <span className="ml-3 whitespace-nowrap">Calendar</span>}
             </div>
-          </Link>
+          </button>
           
           {/* Media */}
-          <Link href="#" className="flex items-center h-9 w-full hover:bg-gray-800 text-gray-400 hover:text-white px-0">
+          <button 
+            onClick={() => setActiveItem('media')}
+            className={`flex items-center h-9 w-full hover:bg-blue-700 px-0 focus:outline-none ${
+              activeItem === 'media' ? 'bg-blue-600 text-white' : 'text-gray-400 hover:text-white hover:bg-gray-800'
+            }`}
+          >
             <div className={`flex items-center h-full ${isExpanded ? 'pl-4' : 'justify-center w-full'}`}>
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"></rect>
@@ -88,10 +112,15 @@ export default function Sidebar() {
               </svg>
               {isExpanded && <span className="ml-3 whitespace-nowrap">Media</span>}
             </div>
-          </Link>
+          </button>
           
           {/* Inbox */}
-          <Link href="#" className="flex items-center h-9 w-full hover:bg-gray-800 text-gray-400 hover:text-white px-0">
+          <button 
+            onClick={() => setActiveItem('inbox')}
+            className={`flex items-center h-9 w-full hover:bg-blue-700 px-0 focus:outline-none ${
+              activeItem === 'inbox' ? 'bg-blue-600 text-white' : 'text-gray-400 hover:text-white hover:bg-gray-800'
+            }`}
+          >
             <div className={`flex items-center h-full ${isExpanded ? 'pl-4' : 'justify-center w-full'}`}>
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M22 12h-6l-2 3h-4l-2-3H2"></path>
@@ -99,10 +128,15 @@ export default function Sidebar() {
               </svg>
               {isExpanded && <span className="ml-3 whitespace-nowrap">Inbox</span>}
             </div>
-          </Link>
+          </button>
           
           {/* Tasks */}
-          <Link href="#" className="flex items-center h-9 w-full hover:bg-gray-800 text-gray-400 hover:text-white px-0">
+          <button 
+            onClick={() => setActiveItem('tasks')}
+            className={`flex items-center h-9 w-full hover:bg-blue-700 px-0 focus:outline-none ${
+              activeItem === 'tasks' ? 'bg-blue-600 text-white' : 'text-gray-400 hover:text-white hover:bg-gray-800'
+            }`}
+          >
             <div className={`flex items-center h-full ${isExpanded ? 'pl-4' : 'justify-center w-full'}`}>
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <line x1="8" y1="6" x2="21" y2="6"></line>
@@ -114,10 +148,15 @@ export default function Sidebar() {
               </svg>
               {isExpanded && <span className="ml-3 whitespace-nowrap">Tasks</span>}
             </div>
-          </Link>
+          </button>
           
           {/* Reports */}
-          <Link href="#" className="flex items-center h-9 w-full hover:bg-gray-800 text-gray-400 hover:text-white px-0">
+          <button 
+            onClick={() => setActiveItem('reports')}
+            className={`flex items-center h-9 w-full hover:bg-blue-700 px-0 focus:outline-none ${
+              activeItem === 'reports' ? 'bg-blue-600 text-white' : 'text-gray-400 hover:text-white hover:bg-gray-800'
+            }`}
+          >
             <div className={`flex items-center h-full ${isExpanded ? 'pl-4' : 'justify-center w-full'}`}>
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
@@ -128,18 +167,15 @@ export default function Sidebar() {
               </svg>
               {isExpanded && <span className="ml-3 whitespace-nowrap">Reports</span>}
             </div>
-          </Link>
+          </button>
         </nav>
         
         {/* Bottom section */}
-        <div className="mt-auto flex flex-col items-center mb-4 w-full">
-          {/* Avatar/profile section at bottom */}
-          <div className={`flex items-center ${isExpanded ? 'justify-start pl-4' : 'justify-center'} w-full`}>
-            <div className="w-8 h-8 rounded-full bg-green-600 overflow-hidden flex items-center justify-center">
-              <div className="text-white text-sm">U</div>
-            </div>
-            {isExpanded && <span className="ml-3 text-white text-sm whitespace-nowrap">User Name</span>}
+        <div className={`flex items-center ${isExpanded ? 'justify-start pl-4' : 'justify-center'} w-full`}>
+          <div className="w-8 h-8 rounded-full bg-green-600 overflow-hidden flex items-center justify-center">
+            <div className="text-white text-sm">U</div>
           </div>
+          {isExpanded && <span className="ml-3 text-white text-sm whitespace-nowrap">User Name</span>}
         </div>
       </div>
     </div>
