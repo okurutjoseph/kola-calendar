@@ -24,6 +24,9 @@ const WelcomeModal = ({ isOpen, onClose }: WelcomeModalProps) => {
     { name: 'TikTok Ads', icon: 'tiktok.svg', color: '#000000' },
     { name: 'X (Twitter)', icon: 'twitter.svg', color: '#000000' },
     { name: 'Tumblr', icon: 'tumblr.svg', color: '#36465D' },
+    { name: 'Yelp', icon: 'yelp.svg', color: '#D32323' },
+    { name: 'TripAdvisor', icon: 'tripadvisor.svg', color: '#00AF87' },
+    { name: 'Google Analytics', icon: 'google-analytics.svg', color: '#E37400' },
   ];
 
   return (
