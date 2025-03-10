@@ -42,7 +42,7 @@ const WelcomeModal = ({ isOpen, onClose }: WelcomeModalProps) => {
         <div className="flex flex-col md:flex-row h-full">
           {/* Left content - Welcome text and video - Not scrollable */}
           <div className="md:w-[40%] p-8 flex-shrink-0">
-            <h1 className="text-3xl font-bold text-blue-600 mb-5">Welcome to Vista Social!</h1>
+            <h1 className="text-3xl font-bold text-blue-600 mb-5">Welcome to Kola Social!</h1>
             
             <p className="text-gray-700 mb-6">
               We are beyond excited that you chose our tool to help you manage yours and take it to new heights! To get started, please begin by connecting your social profiles. You can also watch these few quick videos to help you get started!
@@ -74,21 +74,24 @@ const WelcomeModal = ({ isOpen, onClose }: WelcomeModalProps) => {
 
           {/* Right content - Social media connections - Scrollable */}
           <div className="md:w-[60%] bg-gray-50 p-8 max-h-[90vh] overflow-y-auto rounded-l-2xl">
-            <h2 className="text-xl font-bold text-gray-800 mb-5">Connect your social profiles</h2>
-            
-            {/* Search bar */}
-            <div className="mb-6">
-              <input
-                type="text"
-                placeholder="Search for network"
-                className="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              />
+            {/* Header and search in same row */}
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-xl font-bold text-gray-800">Connect your social profiles</h2>
+              
+              {/* Search bar */}
+              <div className="w-56">
+                <input
+                  type="text"
+                  placeholder="Search for network"
+                  className="w-full p-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                />
+              </div>
             </div>
             
-            {/* Social platforms grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {/* Social platforms grid - 4 columns */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3">
               {socialPlatforms.map((platform) => (
-                <div key={platform.name} className="border border-gray-200 rounded-xl p-4 flex flex-col items-center bg-white">
+                <div key={platform.name} className="border border-gray-200 rounded-xl p-3 flex flex-col items-center bg-white">
                   <div className="mb-2 flex items-center">
                     <div 
                       className="w-7 h-7 rounded-full flex items-center justify-center mr-2"
