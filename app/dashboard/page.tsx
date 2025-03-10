@@ -7,6 +7,7 @@ import NewPostModal from '../components/NewPostModal';
 import NewNoteModal from '../components/NewNoteModal';
 import MediaLibrary from '../components/MediaLibrary';
 import TasksManager from '../components/TasksManager';
+import WelcomeModal from '../components/WelcomeModal';
 
 export default function Dashboard() {
   const [showProfileSelector, setShowProfileSelector] = useState(false);
@@ -15,6 +16,7 @@ export default function Dashboard() {
   const [activeDate, setActiveDate] = useState(10); // Set day 10 as active
   const [showNewPostModal, setShowNewPostModal] = useState(false);
   const [showNewNoteModal, setShowNewNoteModal] = useState(false);
+  const [showWelcomeModal, setShowWelcomeModal] = useState(true); // Start with welcome modal visible
 
   useEffect(() => {
     // Add a small delay for the animation to trigger after component mount
@@ -305,6 +307,7 @@ export default function Dashboard() {
       {/* Modals */}
       <NewPostModal isOpen={showNewPostModal} onClose={() => setShowNewPostModal(false)} />
       <NewNoteModal isOpen={showNewNoteModal} onClose={() => setShowNewNoteModal(false)} />
+      <WelcomeModal isOpen={showWelcomeModal} onClose={() => setShowWelcomeModal(false)} />
     </div>
   );
 } 

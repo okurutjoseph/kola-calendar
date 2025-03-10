@@ -1,8 +1,20 @@
 "use client"
 
 import React from 'react';
+import { useRouter } from 'next/navigation';
 
 const RegistrationForm = () => {
+  const router = useRouter();
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // In a real app, you would handle the form submission here
+    // and redirect after successful registration
+    
+    // Redirect to the dashboard
+    router.push('/dashboard');
+  };
+
   return (
     <div className="flex h-screen">
       {/* Left side - Blue background with testimonial */}
@@ -59,10 +71,10 @@ const RegistrationForm = () => {
       {/* Right side - Registration form */}
       <div className="w-[55%] p-12 overflow-y-auto flex flex-col">
         <div className="max-w-md mx-auto w-full flex-1">
-          <h1 className="text-3xl font-bold text-gray-800 mb-6">Let's get to know you</h1>
+          <h1 className="text-3xl font-bold text-gray-800 mb-6">Let&apos;s get to know you</h1>
           <p className="text-gray-600 mb-8">Your answers will help us tailor your Vista Social experience</p>
           
-          <form className="space-y-6">
+          <form className="space-y-6" onSubmit={handleSubmit}>
             <div>
               <input 
                 type="text" 
