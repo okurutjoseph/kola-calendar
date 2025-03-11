@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { SocialProfilesProvider } from "./context/SocialProfilesContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -27,7 +28,9 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-[#f5f8fd]`}
       >
-        {children}
+        <SocialProfilesProvider>
+          {children}
+        </SocialProfilesProvider>
       </body>
     </html>
   );

@@ -1,6 +1,7 @@
 "use client"
 
-import React from 'react';
+import React, { useState } from 'react';
+import { useSocialProfiles } from '../context/SocialProfilesContext';
 
 interface WelcomeModalProps {
   isOpen: boolean;
@@ -8,6 +9,9 @@ interface WelcomeModalProps {
 }
 
 const WelcomeModal = ({ isOpen, onClose }: WelcomeModalProps) => {
+  const { connectProfile, isProfileConnected } = useSocialProfiles();
+  const [searchTerm, setSearchTerm] = useState('');
+  
   if (!isOpen) return null;
 
   // Social media platforms data
@@ -28,6 +32,18 @@ const WelcomeModal = ({ isOpen, onClose }: WelcomeModalProps) => {
     { name: 'TripAdvisor', icon: 'tripadvisor.svg', color: '#00AF87' },
     { name: 'Google Analytics', icon: 'google-analytics.svg', color: '#E37400' },
   ];
+
+  // Filter platforms based on search term
+  const filteredPlatforms = searchTerm
+    ? socialPlatforms.filter(platform => 
+        platform.name.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    : socialPlatforms;
+
+  // Handle connect button click
+  const handleConnect = (platformName: string) => {
+    connectProfile(platformName);
+  };
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50">
@@ -87,51 +103,64 @@ const WelcomeModal = ({ isOpen, onClose }: WelcomeModalProps) => {
                   type="text"
                   placeholder="Search for network"
                   className="w-full p-2.5 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
                 />
               </div>
             </div>
             
             {/* Social platforms grid - 4 columns */}
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3">
-              {socialPlatforms.map((platform) => (
-                <div key={platform.name} className="border border-gray-200 rounded-xl p-3 flex flex-col items-center bg-white">
-                  <div className="mb-2 flex items-center">
-                    <div 
-                      className="w-7 h-7 rounded-full flex items-center justify-center mr-2"
-                      style={{ backgroundColor: platform.color === '#FFFC00' ? '#FFFC00' : 'transparent' }}
-                    >
-                      {/* Social Media Icon Fallback */}
+              {filteredPlatforms.map((platform) => {
+                const isConnected = isProfileConnected(platform.name);
+                
+                return (
+                  <div key={platform.name} className="border border-gray-200 rounded-xl p-3 flex flex-col items-center bg-white">
+                    <div className="mb-2 flex items-center">
                       <div 
-                        className="w-6 h-6 rounded-full overflow-hidden flex items-center justify-center text-white"
-                        style={{ backgroundColor: platform.color !== '#FFFC00' ? platform.color : 'transparent' }}
+                        className="w-7 h-7 rounded-full flex items-center justify-center mr-2"
+                        style={{ backgroundColor: platform.color === '#FFFC00' ? '#FFFC00' : 'transparent' }}
                       >
-                        {platform.name === 'Facebook' && (
-                          <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M13.397 20.997v-8.196h2.765l.411-3.209h-3.176V7.548c0-.926.258-1.56 1.587-1.56h1.684V3.127c-.82-.088-1.643-.13-2.467-.129-2.444 0-4.122 1.492-4.122 4.231v2.355H7.332v3.209h2.753v8.202h3.312z"></path>
-                          </svg>
-                        )}
-                        {platform.name === 'TikTok' && (
-                          <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M19.589 6.686a4.793 4.793 0 0 1-3.77-4.245V2h-3.445v13.672a2.896 2.896 0 0 1-5.201 1.743l-.002-.001a2.895 2.895 0 0 1 3.183-4.51v-3.5a6.329 6.329 0 0 0-5.394 10.692a6.33 6.33 0 0 0 10.857-4.424V8.687a8.182 8.182 0 0 0 4.773 1.526V6.79a4.831 4.831 0 0 1-1.003-.104z"></path>
-                          </svg>
-                        )}
-                        {platform.name === 'Instagram' && (
-                          <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
-                            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
-                          </svg>
-                        )}
-                        {!['Facebook', 'TikTok', 'Instagram'].includes(platform.name) && (
-                          <span className="text-xs">{platform.name.charAt(0)}</span>
-                        )}
+                        {/* Social Media Icon Fallback */}
+                        <div 
+                          className="w-6 h-6 rounded-full overflow-hidden flex items-center justify-center text-white"
+                          style={{ backgroundColor: platform.color !== '#FFFC00' ? platform.color : 'transparent' }}
+                        >
+                          {platform.name === 'Facebook' && (
+                            <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
+                              <path d="M13.397 20.997v-8.196h2.765l.411-3.209h-3.176V7.548c0-.926.258-1.56 1.587-1.56h1.684V3.127c-.82-.088-1.643-.13-2.467-.129-2.444 0-4.122 1.492-4.122 4.231v2.355H7.332v3.209h2.753v8.202h3.312z"></path>
+                            </svg>
+                          )}
+                          {platform.name === 'TikTok' && (
+                            <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
+                              <path d="M19.589 6.686a4.793 4.793 0 0 1-3.77-4.245V2h-3.445v13.672a2.896 2.896 0 0 1-5.201 1.743l-.002-.001a2.895 2.895 0 0 1 3.183-4.51v-3.5a6.329 6.329 0 0 0-5.394 10.692a6.33 6.33 0 0 0 10.857-4.424V8.687a8.182 8.182 0 0 0 4.773 1.526V6.79a4.831 4.831 0 0 1-1.003-.104z"></path>
+                            </svg>
+                          )}
+                          {platform.name === 'Instagram' && (
+                            <svg className="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
+                              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                            </svg>
+                          )}
+                          {!['Facebook', 'TikTok', 'Instagram'].includes(platform.name) && (
+                            <span className="text-xs">{platform.name.charAt(0)}</span>
+                          )}
+                        </div>
                       </div>
+                      <span className="text-sm">{platform.name}</span>
                     </div>
-                    <span className="text-sm">{platform.name}</span>
+                    <button 
+                      className={`mt-2 w-full py-2 px-4 rounded-xl transition-colors ${
+                        isConnected 
+                          ? 'bg-green-500 text-white hover:bg-green-600' 
+                          : 'border border-blue-500 text-blue-500 hover:bg-blue-50'
+                      }`}
+                      onClick={() => handleConnect(platform.name)}
+                    >
+                      {isConnected ? 'Connected' : 'Connect'}
+                    </button>
                   </div>
-                  <button className="mt-2 w-full py-2 px-4 border border-blue-500 text-blue-500 rounded-xl hover:bg-blue-50 transition-colors">
-                    Connect
-                  </button>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </div>
